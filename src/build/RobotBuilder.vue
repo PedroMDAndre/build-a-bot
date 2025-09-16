@@ -58,8 +58,12 @@
 
 <script setup>
 import toCurrency from '@/shared/formatter';
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import parts from '../data/parts';
+
+onMounted(() => {
+  console.log('mounted');
+});
 
 function nextValidIndex(index, length) {
   const incrementedIndex = index + 1;
@@ -156,7 +160,6 @@ const selectPreviousBase = () => {
     availableParts.bases.length,
   );
 };
-
 // #endregion
 </script>
 
