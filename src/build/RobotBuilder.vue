@@ -58,7 +58,7 @@
 
 <script setup>
 import toCurrency from '@/shared/formatter';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import parts from '../data/parts';
 
 function nextValidIndex(index, length) {
@@ -72,68 +72,89 @@ function previousValidIndex(index, length) {
 }
 
 const availableParts = parts;
-let selectedHeadIndex = 0;
-let selectedLeftArmIndex = 0;
-let selectedTorsoIndex = 0;
-let selectedRightArmIndex = 0;
-let selectedBaseIndex = 0;
-const cart = [];
+const selectedHeadIndex = ref(0);
+const selectedLeftArmIndex = ref(0);
+const selectedTorsoIndex = ref(0);
+const selectedRightArmIndex = ref(0);
+const selectedBaseIndex = ref(0);
+const cart = ref([]);
 
 const selectedRobot = computed(() => ({
-  head: availableParts.heads[selectedHeadIndex],
-  leftArm: availableParts.arms[selectedLeftArmIndex],
-  torso: availableParts.torsos[selectedTorsoIndex],
-  rightArm: availableParts.arms[selectedRightArmIndex],
-  base: availableParts.bases[selectedBaseIndex],
+  head: availableParts.heads[selectedHeadIndex.value],
+  leftArm: availableParts.arms[selectedLeftArmIndex.value],
+  torso: availableParts.torsos[selectedTorsoIndex.value],
+  rightArm: availableParts.arms[selectedRightArmIndex.value],
+  base: availableParts.bases[selectedBaseIndex.value],
 }));
 
 const addToCart = () => {
-  const robot = selectedRobot;
+  const robot = selectedRobot.value;
   const cost =
     robot.head.cost + robot.leftArm.cost + robot.torso.cost + robot.rightArm.cost + robot.base.cost;
-  cart.push({ ...robot, cost });
-  console.log(cart.length);
+  cart.value.push({ ...robot, cost });
+  console.log(cart.value.length);
 };
 
 // #region Part Selector Methods
 const selectNextHead = () => {
-  selectedHeadIndex = nextValidIndex(selectedHeadIndex, availableParts.heads.length);
+  selectedHeadIndex.value = nextValidIndex(selectedHeadIndex.value, availableParts.heads.length);
 };
 
 const selectPreviousHead = () => {
-  selectedHeadIndex = previousValidIndex(selectedHeadIndex, availableParts.heads.length);
+  selectedHeadIndex.value = previousValidIndex(
+    selectedHeadIndex.value,
+    availableParts.heads.length,
+  );
 };
 
 const selectNextLeftArm = () => {
-  selectedLeftArmIndex = nextValidIndex(selectedLeftArmIndex, availableParts.arms.length);
+  selectedLeftArmIndex.value = nextValidIndex(
+    selectedLeftArmIndex.value,
+    availableParts.arms.length,
+  );
 };
 
 const selectPreviousLeftArm = () => {
-  selectedLeftArmIndex = previousValidIndex(selectedLeftArmIndex, availableParts.arms.length);
+  selectedLeftArmIndex.value = previousValidIndex(
+    selectedLeftArmIndex.value,
+    availableParts.arms.length,
+  );
 };
 
 const selectNextTorso = () => {
-  selectedTorsoIndex = nextValidIndex(selectedTorsoIndex, availableParts.torsos.length);
+  selectedTorsoIndex.value = nextValidIndex(selectedTorsoIndex.value, availableParts.torsos.length);
 };
 
 const selectPreviousTorso = () => {
-  selectedTorsoIndex = previousValidIndex(selectedTorsoIndex, availableParts.torsos.length);
+  selectedTorsoIndex.value = previousValidIndex(
+    selectedTorsoIndex.value,
+    availableParts.torsos.length,
+  );
 };
 
 const selectNextRightArm = () => {
-  selectedRightArmIndex = nextValidIndex(selectedRightArmIndex, availableParts.arms.length);
+  selectedRightArmIndex.value = nextValidIndex(
+    selectedRightArmIndex.value,
+    availableParts.arms.length,
+  );
 };
 
 const selectPreviousRightArm = () => {
-  selectedRightArmIndex = previousValidIndex(selectedRightArmIndex, availableParts.arms.length);
+  selectedRightArmIndex.value = previousValidIndex(
+    selectedRightArmIndex.value,
+    availableParts.arms.length,
+  );
 };
 
 const selectNextBase = () => {
-  selectedBaseIndex = nextValidIndex(selectedBaseIndex, availableParts.bases.length);
+  selectedBaseIndex.value = nextValidIndex(selectedBaseIndex.value, availableParts.bases.length);
 };
 
 const selectPreviousBase = () => {
-  selectedBaseIndex = previousValidIndex(selectedBaseIndex, availableParts.bases.length);
+  selectedBaseIndex.value = previousValidIndex(
+    selectedBaseIndex.value,
+    availableParts.bases.length,
+  );
 };
 
 // #endregion
