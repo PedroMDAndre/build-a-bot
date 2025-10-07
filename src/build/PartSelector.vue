@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, onUpdated, ref } from 'vue';
 
 const props = defineProps({
   parts: { type: Array, required: true },
@@ -20,31 +20,30 @@ const props = defineProps({
     },
   },
 });
-const emit = defineEmits(['partSelected']);
 
+const emit = defineEmits(['partSelected']);
 const selectedPartIndex = ref(0);
 const selectedPart = computed(() => props.parts[selectedPartIndex.value]);
 
 emit('partSelected', selectedPart);
+onUpdated(() => emit('partSelected', selectedPart));
 
-function nextValidIndex(index, length) {
-  const incrementedIndex = index + 1;
-  return incrementedIndex > length - 1 ? 0 : incrementedIndex;
-}
-
-function previousValidIndex(index, length) {
+function getPreviousValidIndex(index, length) {
   const deprecatedIndex = index - 1;
   return deprecatedIndex < 0 ? length - 1 : deprecatedIndex;
 }
 
+function getNextValidIndex(index, length) {
+  const incrementedIndex = index + 1;
+  return incrementedIndex > length - 1 ? 0 : incrementedIndex;
+}
+
 const selectNextPart = () => {
-  selectedPartIndex.value = nextValidIndex(selectedPartIndex.value, props.parts.length);
-  emit('partSelected', selectedPart);
+  selectedPartIndex.value = getNextValidIndex(selectedPartIndex.value, props.parts.length);
 };
 
 const selectPreviousPart = () => {
-  selectedPartIndex.value = previousValidIndex(selectedPartIndex.value, props.parts.length);
-  emit('partSelected', selectedPart);
+  selectedPartIndex.value = getPreviousValidIndex(selectedPartIndex.value, props.parts.length);
 };
 </script>
 

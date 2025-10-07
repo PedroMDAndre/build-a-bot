@@ -14,7 +14,7 @@
           <img :src="selectedRobot.base.imageUrl" alt="base" />
         </div>
       </div>
-      <button class="add-to-cart" @click="addToCart()">Add to cart</button>
+      <button class="add-to-cart" @click="addToCart()">Add to Cart</button>
     </div>
     <div class="top-row">
       <div class="robot-name">
