@@ -3,21 +3,20 @@
     <nav>
       <ul>
         <li class="nav-item">
-          <img class="logo" src="./assets/build-a-bot-logo.png" alt="logo" />
-          Build-a-bot
+          <router-link :to="{ name: 'Home' }" class="nav-link">
+            <img class="logo" src="./assets/build-a-bot-logo.png" alt="logo" />
+            Build-a-bot
+          </router-link>
         </li>
       </ul>
     </nav>
   </header>
   <main>
-    <!-- <HomePage /> -->
-    <RobotBuilder />
+    <router-view />
   </main>
 </template>
 
 <script setup>
-// import HomePage from './home/HomePage.vue';
-import RobotBuilder from './build/RobotBuilder.vue';
 </script>
 
 <style>
@@ -49,6 +48,11 @@ header {
 ul {
   padding: 3px;
   display: flex;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: inherit;
 }
 
 .nav-item {
