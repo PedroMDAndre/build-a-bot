@@ -1,19 +1,21 @@
 <template>
   <div class="content">
     <div class="preview">
-      <div class="preview-content">
-        <div class="top-row">
-          <img :src="selectedRobot.head.imageUrl" alt="head" />
+      <CollapsibleSection>
+        <div class="preview-content">
+          <div class="top-row">
+            <img :src="selectedRobot.head.imageUrl" alt="head" />
+          </div>
+          <div class="middle-row">
+            <img :src="selectedRobot.leftArm.imageUrl" class="rotate-left" alt="left arm" />
+            <img :src="selectedRobot.torso.imageUrl" alt="torso" />
+            <img :src="selectedRobot.rightArm.imageUrl" class="rotate-right" alt="right arm" />
+          </div>
+          <div class="bottom-row">
+            <img :src="selectedRobot.base.imageUrl" alt="base" />
+          </div>
         </div>
-        <div class="middle-row">
-          <img :src="selectedRobot.leftArm.imageUrl" class="rotate-left" alt="left arm" />
-          <img :src="selectedRobot.torso.imageUrl" alt="torso" />
-          <img :src="selectedRobot.rightArm.imageUrl" class="rotate-right" alt="right arm" />
-        </div>
-        <div class="bottom-row">
-          <img :src="selectedRobot.base.imageUrl" alt="base" />
-        </div>
-      </div>
+      </CollapsibleSection>
       <button class="add-to-cart" @click="addToCart()">Add to Cart</button>
     </div>
     <div class="top-row">
@@ -78,8 +80,9 @@
 </template>
 
 <script setup>
-import toCurrency from '@/shared/formatter';
+import toCurrency from '@/shared/formatters';
 import { onMounted, ref } from 'vue';
+import CollapsibleSection from '@/shared/CollapsibleSection.vue';
 import parts from '../data/parts';
 import PartSelector from './PartSelector.vue';
 
