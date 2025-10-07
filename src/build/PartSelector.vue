@@ -1,6 +1,6 @@
 <template>
   <div class="part" :class="position">
-    <img :src="selectedPart.imageUrl" alt="left arm" />
+    <img :src="selectedPart.imageUrl" alt="part" />
     <button @click="selectPreviousPart()" class="prev-selector"></button>
     <button @click="selectNextPart()" class="next-selector"></button>
     <span class="sale" v-show="selectedPart.onSale">Sale!</span>
@@ -10,12 +10,6 @@
 <script setup>
 import { computed, ref } from 'vue';
 
-// const props = defineProps({
-//   parts: {
-//     type: Array,
-//     required: true,
-//   },
-// });
 const props = defineProps({
   parts: { type: Array, required: true },
   position: {
@@ -26,10 +20,12 @@ const props = defineProps({
     },
   },
 });
-const emit = defineEmits(['selectedPart']);
+const emit = defineEmits(['partSelected']);
 
 const selectedPartIndex = ref(0);
 const selectedPart = computed(() => props.parts[selectedPartIndex.value]);
+
+emit('partSelected', selectedPart);
 
 function nextValidIndex(index, length) {
   const incrementedIndex = index + 1;
@@ -43,12 +39,12 @@ function previousValidIndex(index, length) {
 
 const selectNextPart = () => {
   selectedPartIndex.value = nextValidIndex(selectedPartIndex.value, props.parts.length);
-  emit('selectedPart', selectedPartIndex.value);
+  emit('partSelected', selectedPart);
 };
 
 const selectPreviousPart = () => {
   selectedPartIndex.value = previousValidIndex(selectedPartIndex.value, props.parts.length);
-  emit('selectedPart', selectedPartIndex.value);
+  emit('partSelected', selectedPart);
 };
 </script>
 

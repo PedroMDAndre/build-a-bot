@@ -1,6 +1,21 @@
 <template>
   <div class="content">
-    <button class="add-to-cart" @click="addToCart()">Add to cart</button>
+    <div class="preview">
+      <div class="preview-content">
+        <div class="top-row">
+          <img :src="selectedRobot.head.imageUrl" alt="head" />
+        </div>
+        <div class="middle-row">
+          <img :src="selectedRobot.leftArm.imageUrl" class="rotate-left" alt="left arm" />
+          <img :src="selectedRobot.torso.imageUrl" alt="torso" />
+          <img :src="selectedRobot.rightArm.imageUrl" class="rotate-right" alt="right arm" />
+        </div>
+        <div class="bottom-row">
+          <img :src="selectedRobot.base.imageUrl" alt="base" />
+        </div>
+      </div>
+      <button class="add-to-cart" @click="addToCart()">Add to cart</button>
+    </div>
     <div class="top-row">
       <div class="robot-name">
         {{ selectedRobot.head?.title }}
@@ -9,7 +24,7 @@
         :parts="availableParts.heads"
         position="top"
         alt="head"
-        @selectedPart="selectedHead"
+        @partSelected="selectedHead"
       />
     </div>
     <div class="middle-row">
@@ -17,21 +32,21 @@
         :parts="availableParts.arms"
         position="left"
         alt="left arm"
-        @selectedPart="selectedLeftArm"
+        @partSelected="selectedLeftArm"
       />
 
       <PartSelector
         :parts="availableParts.torsos"
         position="center"
         alt="torso"
-        @selectedPart="selectedTorso"
+        @partSelected="selectedTorso"
       />
 
       <PartSelector
         :parts="availableParts.arms"
         position="right"
         alt="right arm"
-        @selectedPart="selectedRightArm"
+        @partSelected="selectedRightArm"
       />
     </div>
     <div class="bottom-row">
@@ -39,7 +54,7 @@
         :parts="availableParts.bases"
         position="bottom"
         alt="base"
-        @selectedPart="selectedBottom"
+        @partSelected="selectedBottom"
       />
     </div>
   </div>
@@ -64,7 +79,7 @@
 
 <script setup>
 import toCurrency from '@/shared/formatter';
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import parts from '../data/parts';
 import PartSelector from './PartSelector.vue';
 
@@ -73,20 +88,15 @@ onMounted(() => {
 });
 
 const availableParts = parts;
-const selectedHeadIndex = ref(0);
-const selectedLeftArmIndex = ref(0);
-const selectedTorsoIndex = ref(0);
-const selectedRightArmIndex = ref(0);
-const selectedBaseIndex = ref(0);
 const cart = ref([]);
 
-const selectedRobot = computed(() => ({
-  head: availableParts.heads[selectedHeadIndex.value],
-  leftArm: availableParts.arms[selectedLeftArmIndex.value],
-  torso: availableParts.torsos[selectedTorsoIndex.value],
-  rightArm: availableParts.arms[selectedRightArmIndex.value],
-  base: availableParts.bases[selectedBaseIndex.value],
-}));
+const selectedRobot = ref({
+  head: {},
+  leftArm: {},
+  torso: {},
+  rightArm: {},
+  base: {},
+});
 
 const addToCart = () => {
   const robot = selectedRobot.value;
@@ -97,26 +107,24 @@ const addToCart = () => {
 };
 
 // #region Part Selector Methods
-const selectedHead = (index) => {
-  console.log(index);
-  console.log(selectedRobot.value);
-  selectedHeadIndex.value = index;
+const selectedHead = (part) => {
+  selectedRobot.value.head = part;
 };
 
-const selectedLeftArm = (index) => {
-  selectedLeftArmIndex.value = index;
+const selectedLeftArm = (part) => {
+  selectedRobot.value.leftArm = part;
 };
 
-const selectedTorso = (index) => {
-  selectedTorsoIndex.value = index;
+const selectedTorso = (part) => {
+  selectedRobot.value.torso = part;
 };
 
-const selectedRightArm = (index) => {
-  selectedRightArmIndex.value = index;
+const selectedRightArm = (part) => {
+  selectedRobot.value.rightArm = part;
 };
 
-const selectedBottom = (index) => {
-  selectedBaseIndex.value = index;
+const selectedBottom = (part) => {
+  selectedRobot.value.base = part;
 };
 
 // #endregion
@@ -150,10 +158,35 @@ const selectedBottom = (index) => {
   position: relative;
 }
 
+.preview {
+  position: absolute;
+  top: -20px;
+  right: 0;
+  width: 310px;
+  height: 310px;
+  padding: 5px;
+}
+
+.preview-content {
+  border: 1px solid #999;
+}
+
+.preview img {
+  width: 70px;
+  height: 70px;
+}
+
+.rotate-right {
+  transform: rotate(90deg);
+}
+
+.rotate-left {
+  transform: rotate(-90deg);
+}
+
 .add-to-cart {
   position: absolute;
-  right: 30px;
-  width: 220px;
+  width: 310px;
   padding: 3px;
   font-size: 16px;
 }
