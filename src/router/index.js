@@ -1,10 +1,12 @@
 import RobotBuilder from '@/build/RobotBuilder.vue';
 import HomePage from '@/home/HomePage.vue';
+import PartInfo from '@/parts/PartInfo.vue';
 import ProductSearch from '@/search/ProductSearch.vue';
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 
 export default createRouter({
-  history: createWebHashHistory(),
+  linkActiveClass: 'active-link',
+  history: createWebHistory(),
   routes: [
     {
       path: '/',
@@ -20,6 +22,12 @@ export default createRouter({
       path: '/search',
       name: 'Search',
       component: ProductSearch,
+    },
+    {
+      path: '/parts/:partType/:id',
+      name: 'Parts',
+      component: PartInfo,
+      props: true,
     },
   ],
 });
